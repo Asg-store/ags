@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ma page</title>
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, sans-serif; background: #f2f5f4; color: #10231d;
+  min-height: 100vh; display: flex; flex-direction: column; }
+.bar { background: #0f6b52; color: #fff; padding: 28px 20px 20px; border-radius: 0 0 22px 22px; }
+.bar h1 { margin: 0; font-size: 22px; }
+.bar p { margin: 6px 0 0; opacity: .9; }
+.bar strong { font-size: 20px; margin-left: 6px; }
+#liste { list-style: none; margin: 0; padding: 16px; flex: 1; display: grid; gap: 10px; align-content: start; }
+#liste li { background: #fff; border-radius: 14px; padding: 14px 16px; display: flex; justify-content: space-between; }
+#ajout { display: flex; gap: 8px; padding: 0 16px 12px; }
+#ajout input { flex: 1; min-width: 0; padding: 12px; border: 1px solid #cfd8d5; border-radius: 12px; font-size: 16px; }
+#prix { max-width: 96px; }
+#ajout button { width: 48px; border: 0; border-radius: 12px; background: #0f6b52; color: #fff; font-size: 22px; }
+.tabs { display: flex; background: #fff; border-top: 1px solid #dfe6e3; }
+.tabs button { flex: 1; padding: 14px 0; border: 0; background: none; color: #6a7b75; font-size: 14px; }
+.tabs .actif { color: #0f6b52; font-weight: 700; }
+</style>
+</head>
+<body>
+<header class="bar">
+  <h1>Mes dépenses</h1>
+  <p>Total du jour <strong id="total">0 F</strong></p>
+</header>
+
+<ul id="liste"></ul>
+
+<form id="ajout">
+  <input id="nom" placeholder="Achat" required>
+  <input id="prix" type="number" inputmode="numeric" placeholder="Prix" required>
+  <button>+</button>
+</form>
+
+<nav class="tabs">
+  <button class="actif">Jour</button>
+  <button>Mois</button>
+  <button>Profil</button>
+</nav>
+<script>
+var depenses = [
+  { nom: "Taxi", prix: 1500 },
+  { nom: "Déjeuner", prix: 1500 }
+];
+
+function afficher() {
+  var liste = document.getElementById("liste");
+  liste.innerHTML = "";
+  var total = 0;
+  depenses.forEach(function (d) {
+    total += d.prix;
+    var li = document.createElement("li");
+    var nom = document.createElement("span");
+    var prix = document.createElement("strong");
+    nom.textContent = d.nom;
+    prix.textContent = d.prix + " F";
+    li.append(nom, prix);
+    liste.append(li);
+  });
+  document.getElementById("total").textContent = total + " F";
+}
+
+document.getElementById("ajout").addEventListener("submit", function (e) {
+  e.preventDefault();
+  var nom = document.getElementById("nom");
+  var prix = document.getElementById("prix");
+  depenses.push({ nom: nom.value, prix: Number(prix.value) });
+  nom.value = ""; prix.value = "";
+  afficher();
+});
+
+afficher();
+</script>
+</body>
+</html>
